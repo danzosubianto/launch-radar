@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Launch Radar — the pre-token protocol board</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="masthead">
+  <div class="brand">
+    <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+    <div>
+      <h1>Launch Radar</h1>
+      <p class="tagline">Every protocol in the snapshot that records no token yet — ranked by what a token would be worth if its record stayed as it is, with the farm plan for each.</p>
+    </div>
+  </div>
+  <div class="snapshot-note" id="snapshot-note"></div>
+</header>
+
+<section class="stats" id="stats" aria-label="Board totals"></section>
+
+<section class="model-strip" aria-label="The value model">
+  <div class="model-text">
+    <h2>How a row earns its value — model <span id="model-version"></span></h2>
+    <p id="model-formula"></p>
+    <p class="model-note">The category multiple is not a constant: it is the median market-cap/TVL of the tokenized protocols in that category in this snapshot, shrunk toward the global median by peer count. No protocol name is special-cased anywhere in the model.</p>
+  </div>
+  <div class="peer-box">
+    <h3>Category multiples measured from the snapshot</h3>
+    <table class="peers" id="peer-table"></table>
+  </div>
+</section>
+
+<nav class="tabs" aria-label="Views">
+  <button type="button" class="tab active" data-tab="board">Radar board</button>
+  <button type="button" class="tab" data-tab="live">Already trading</button>
+</nav>
+
+<main>
+  <section id="view-board">
+    <div class="controls">
+      <label class="search">Search <input type="search" id="q" placeholder="protocol or slug…"></label>
+      <label>Category <select id="category"></select></label>
+      <label>Chain <select id="chain"></select></label>
+      <label>Min TVL <select id="min-tvl">
+        <option value="0">any</option>
+        <option value="10000000">$10M</option>
+        <option value="50000000">$50M</option>
+        <option value="250000000">$250M</option>
+        <option value="1000000000">$1B</option>
+      </select></label>
+      <div class="chips" id="class-chips" role="group" aria-label="Row class">
+        <button type="button" data-class="all" class="chip active">All rows</button>
+        <button type="button" data-class="watchlist" class="chip">Watchlist</button>
+        <button type="button" data-class="early" class="chip">Early finds</button>
+        <button type="button" data-class="derivative" class="chip">Derivatives</button>
+      </div>
+      <span class="count" id="row-count"></span>
+    </div>
+    <div class="table-wrap">
+      <table class="board" id="board-table">
+        <thead><tr>
+          <th data-sort="rank" class="num">Rank</th>
+          <th data-sort="name">Protocol</th>
+          <th data-sort="category">Category</th>
+          <th>Chains</th>
+          <th data-sort="tvl" class="num">TVL</th>
+          <th data-sort="change" class="num">7d</th>
+          <th data-sort="age" class="num">Tokenless age</th>
+          <th data-sort="implied" class="num">Implied value</th>
+          <th data-sort="ratio" class="num">Impl / TVL</th>
+        </tr></thead>
+        <tbody id="board-body"></tbody>
+      </table>
+    </div>
+    <p class="fineprint">A protocol “records no token” when its DefiLlama record carries no market cap, no CoinGecko id and no symbol. That is a statement about the record, not the world: a protocol may still have a token its record does not carry. Derivative rows are wrapped, staked or bridged products of tokens that already trade — their value sits with the parent token, so the model prices them at a fraction and their farm plan says so.</p>
+  </section>
+
+  <section id="view-live" hidden>
+    <p class="live-intro">These protocols already trade a token, so the radar does not rank them: it shows the market's own value. They are also the evidence base — their market-cap/TVL ratios are what the board's category multiples are measured from.</p>
+    <div class="table-wrap">
+      <table class="board" id="live-table">
+        <thead><tr>
+          <th>Protocol</th><th>Symbol</th><th>Category</th><th class="num">TVL</th>
+          <th class="num">7d</th><th class="num">Market cap</th><th class="num">MCap / TVL</th>
+        </tr></thead>
+        <tbody id="live-body"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<aside class="drawer" id="drawer" hidden aria-label="Protocol detail">
+  <button type="button" class="drawer-close" id="drawer-close" aria-label="Close detail">×</button>
+  <div id="drawer-content"></div>
+</aside>
+<div class="scrim" id="scrim" hidden></div>
+
+<footer>
+  <p id="footer-line"></p>
+  <p>Implied value is this board's own claim, computed from the snapshot's figures by the model stated above — not a prediction that a token will be issued, or when. Farm plans are starting points, not financial advice: check the protocol's own page before moving funds.</p>
+</footer>
+
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
